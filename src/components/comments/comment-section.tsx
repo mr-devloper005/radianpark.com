@@ -41,7 +41,7 @@ export function CommentSection({ comments }: CommentSectionProps) {
   return (
     <div>
       <div className="mb-6 flex items-center justify-between">
-        <h2 className="text-xl font-bold text-foreground">
+        <h2 className="text-xl font-bold text-[#111]">
           Comments ({comments.length})
         </h2>
         <div className="flex gap-2">
@@ -63,7 +63,7 @@ export function CommentSection({ comments }: CommentSectionProps) {
       </div>
 
       {/* Comment Composer */}
-      <div className="mb-8 rounded-lg border border-border bg-card p-4">
+      <div className="mb-8 rounded-2xl border border-[#e3e3e3] bg-white p-4 shadow-sm">
         {isAuthenticated ? (
           <div className="flex gap-4">
             <Avatar className="h-10 w-10 ">
@@ -86,10 +86,10 @@ export function CommentSection({ comments }: CommentSectionProps) {
             </div>
           </div>
         ) : (
-          <div className="text-center py-6">
-            <p className="text-muted-foreground mb-4">Sign in to join the conversation</p>
-            <Button asChild>
-              <a href="/login">Sign In</a>
+          <div className="py-6 text-center">
+            <p className="mb-4 text-sm text-[#767676]">Sign in to join the conversation</p>
+            <Button asChild className="rounded-full bg-[#e60023] hover:bg-[#ad081b]">
+              <a href="/login">Sign in</a>
             </Button>
           </div>
         )}

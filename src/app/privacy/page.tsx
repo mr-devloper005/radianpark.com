@@ -13,13 +13,13 @@ export default function PrivacyPage() {
       title="Privacy Policy"
       description="How we collect, use, and protect your information."
     >
-      <Card className="border-border bg-card">
-        <CardContent className="p-6 space-y-4">
-          <p className="text-xs text-muted-foreground">Last updated: March 16, 2026</p>
+      <Card className="rounded-3xl border border-[#e3e3e3] bg-white shadow-sm">
+        <CardContent className="space-y-4 p-6">
+          <p className="text-xs text-[#767676]">Last updated: March 16, 2026</p>
           {sections.map((section) => (
-            <div key={section.title} className="rounded-lg border border-border bg-secondary/40 p-4">
-              <h3 className="text-sm font-semibold text-foreground">{section.title}</h3>
-              <p className="mt-2 text-sm text-muted-foreground">{section.body}</p>
+            <div key={section.title} className="rounded-2xl border border-[#ececec] bg-[#fafafa] p-4">
+              <h3 className="text-sm font-semibold text-[#111]">{section.title}</h3>
+              <p className="mt-2 text-sm text-[#767676]">{section.body}</p>
             </div>
           ))}
         </CardContent>

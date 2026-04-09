@@ -15,6 +15,8 @@ export const storageKeys = {
   adSaves: 'nexus-ad-saves',
   theme: 'nexus-theme',
   settings: 'nexus-settings',
+  /** Local demo accounts: { email, password, name }[] — not for production */
+  localAccounts: 'nexus-local-accounts',
 }
 
 export function loadFromStorage<T>(key: string, fallback: T): T {
