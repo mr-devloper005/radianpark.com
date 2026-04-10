@@ -30,6 +30,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { NavbarShell } from "@/components/shared/navbar-shell"
+import { Footer } from "@/components/shared/footer"
 import { useAuth } from "@/lib/auth-context"
 import { useToast } from "@/components/ui/use-toast"
 import { loadFromStorage, saveToStorage, storageKeys } from "@/lib/local-storage"
@@ -41,6 +42,10 @@ const settingsSections = [
   { id: "appearance", label: "Appearance", icon: Palette },
   { id: "language", label: "Language & Region", icon: Globe },
 ]
+
+/** Pinterest-style descendants inside the main settings card */
+const settingsSurfaceClass =
+  "rounded-3xl border border-[#e3e3e3] bg-white p-6 shadow-sm [&_[data-slot=label]]:font-medium [&_[data-slot=label]]:text-[#111] [&_[data-slot=input]]:rounded-xl [&_[data-slot=input]]:border-[#e3e3e3] [&_[data-slot=input]]:bg-white [&_[data-slot=input]]:text-[#111] [&_[data-slot=input]]:placeholder:text-[#767676] [&_[data-slot=input]]:focus-visible:border-[#e60023] [&_[data-slot=input]]:focus-visible:ring-[#e60023]/30 [&_[data-slot=textarea]]:rounded-xl [&_[data-slot=textarea]]:border-[#e3e3e3] [&_[data-slot=textarea]]:bg-white [&_[data-slot=textarea]]:text-[#111] [&_[data-slot=textarea]]:placeholder:text-[#767676] [&_[data-slot=textarea]]:focus-visible:border-[#e60023] [&_[data-slot=textarea]]:focus-visible:ring-[#e60023]/30 [&_[data-slot=select-trigger]]:rounded-xl [&_[data-slot=select-trigger]]:border-[#e3e3e3] [&_[data-slot=select-trigger]]:bg-white [&_[data-slot=select-trigger]]:text-[#111] [&_[data-slot=select-trigger]]:focus-visible:border-[#e60023] [&_[data-slot=select-trigger]]:focus-visible:ring-[#e60023]/30 [&_[data-slot=switch][data-state=checked]]:!bg-[#e60023] [&_[data-slot=switch][data-state=unchecked]]:!bg-[#d9d9d9] [&_[data-slot=switch-thumb]]:!bg-white"
 
 export default function SettingsPage() {
   const router = useRouter()
@@ -104,11 +109,11 @@ export default function SettingsPage() {
 
   useEffect(() => {
     if (!user) return
-    setName(user.name)
-    setEmail(user.email)
-    setBio(user.bio)
-    setLocation(user.location || "")
-    setWebsite(user.website || "")
+    setName(user.name ?? "")
+    setEmail(user.email ?? "")
+    setBio(user.bio ?? "")
+    setLocation(user.location ?? "")
+    setWebsite(user.website ?? "")
   }, [user])
 
   const [language, setLanguage] = useState("en")
@@ -128,12 +133,17 @@ export default function SettingsPage() {
 
   const handleProfileSave = () => {
     if (!user) return
+    const nameVal = (name ?? "").trim()
+    const emailVal = (email ?? "").trim()
+    const bioVal = (bio ?? "").trim()
+    const locationVal = (location ?? "").trim()
+    const websiteVal = (website ?? "").trim()
     updateUser({
-      name: name.trim() || user.name,
-      email: email.trim() || user.email,
-      bio: bio.trim() || user.bio,
-      location: location.trim() || undefined,
-      website: website.trim() || undefined,
+      name: nameVal || user.name,
+      email: emailVal || user.email,
+      bio: bioVal,
+      location: locationVal || undefined,
+      website: websiteVal || undefined,
     })
     notifyProfileUpdate()
     persistSettings({
@@ -236,11 +246,11 @@ export default function SettingsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-[#f1f1f1] text-[#111]">
       <NavbarShell />
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <h1 className="text-3xl font-bold text-foreground mb-8">Settings</h1>
+      <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
+        <h1 className="mb-8 text-3xl font-bold tracking-tight text-[#111]">Settings</h1>
 
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Sidebar */}
@@ -250,10 +260,10 @@ export default function SettingsPage() {
                 <button
                   key={section.id}
                   onClick={() => setActiveSection(section.id)}
-                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-colors ${
+                  className={`flex w-full items-center gap-3 rounded-xl px-4 py-3 text-left transition-colors ${
                     activeSection === section.id
-                      ? "bg-primary/10 text-primary"
-                      : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                      ? "bg-black/8 font-semibold text-[#111]"
+                      : "text-[#767676] hover:bg-black/5 hover:text-[#111]"
                   }`}
                 >
                   <section.icon className="h-5 w-5" />
@@ -261,10 +271,10 @@ export default function SettingsPage() {
                   <ChevronRight className="h-4 w-4 ml-auto" />
                 </button>
               ))}
-              <Separator className="my-4" />
+              <Separator className="my-4 bg-[#e3e3e3]" />
               <button
                 onClick={handleLogout}
-                className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left text-destructive hover:bg-destructive/10 transition-colors"
+                className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-left text-[#e60023] transition-colors hover:bg-[#e60023]/10"
               >
                 <LogOut className="h-5 w-5" />
                 Log out
@@ -279,16 +289,16 @@ export default function SettingsPage() {
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.2 }}
-              className="bg-card rounded-xl border border-border p-6"
+              className={settingsSurfaceClass}
             >
               {/* Profile Section */}
               {activeSection === "profile" && (
                 <div className="space-y-6">
                   <div>
-                    <h2 className="text-xl font-semibold text-foreground mb-1">
+                    <h2 className="text-xl font-semibold text-[#111] mb-1">
                       Profile Information
                     </h2>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-sm text-[#767676]">
                       Update your personal information and profile picture.
                     </p>
                   </div>
@@ -296,14 +306,15 @@ export default function SettingsPage() {
                   {/* Avatar Upload */}
                   <div className="flex items-center gap-6">
                     <div className="relative">
-                      <Avatar className="w-24 h-24">
+                      <Avatar className="h-24 w-24 border border-[#e3e3e3]">
                         <AvatarImage src={user?.avatar} />
                         <AvatarFallback className="text-2xl">
                           {user?.name?.charAt(0) || "U"}
                         </AvatarFallback>
                       </Avatar>
                       <button
-                        className="absolute bottom-0 right-0 w-8 h-8 bg-primary rounded-full flex items-center justify-center text-primary-foreground shadow-lg hover:bg-primary/90 transition-colors"
+                        type="button"
+                        className="absolute bottom-0 right-0 flex h-8 w-8 items-center justify-center rounded-full bg-[#e60023] text-white shadow-lg transition-colors hover:bg-[#ad081b]"
                         onClick={() => {
                           if (!isEditingProfile) {
                             toast({ title: "Edit mode required", description: "Click Edit Profile to upload." })
@@ -326,6 +337,7 @@ export default function SettingsPage() {
                       <Button
                         variant="outline"
                         size="sm"
+                        className="rounded-full border-[#e3e3e3] bg-white text-[#111] hover:bg-black/5"
                         onClick={() => {
                           if (!isEditingProfile) {
                             toast({ title: "Edit mode required", description: "Click Edit Profile to upload." })
@@ -336,16 +348,16 @@ export default function SettingsPage() {
                       >
                         Upload new photo
                       </Button>
-                      <p className="text-xs text-muted-foreground mt-2">
+                      <p className="text-xs text-[#767676] mt-2">
                         JPG, PNG or GIF. Max size 2MB.
                       </p>
                     </div>
                   </div>
 
-                  <Separator />
+                  <Separator className="bg-[#e3e3e3]" />
 
                   <div className="space-y-4">
-                    <div className="relative overflow-hidden rounded-xl border border-border">
+                    <div className="relative overflow-hidden rounded-xl border border-[#e3e3e3]">
                       <div
                         className="h-32 w-full bg-cover bg-center"
                         style={{
@@ -364,6 +376,7 @@ export default function SettingsPage() {
                       <Button
                         variant="outline"
                         size="sm"
+                        className="rounded-full border-[#e3e3e3] bg-white text-[#111] hover:bg-black/5"
                         onClick={() => {
                           if (!isEditingProfile) {
                             toast({ title: "Edit mode required", description: "Click Edit Profile to upload." })
@@ -374,7 +387,7 @@ export default function SettingsPage() {
                       >
                         Upload cover image
                       </Button>
-                      <span className="text-xs text-muted-foreground">
+                      <span className="text-xs text-[#767676]">
                         Recommended size 1280x320.
                       </span>
                     </div>
@@ -412,7 +425,7 @@ export default function SettingsPage() {
                         rows={4}
                         disabled={!isEditingProfile}
                       />
-                      <p className="text-xs text-muted-foreground">
+                      <p className="text-xs text-[#767676]">
                         Brief description for your profile. Max 160 characters.
                       </p>
                     </div>
@@ -442,15 +455,26 @@ export default function SettingsPage() {
                   <div className="flex justify-end gap-4 pt-4">
                     {isEditingProfile ? (
                       <>
-                        <Button variant="outline" onClick={handleProfileCancel}>
+                        <Button
+                          variant="outline"
+                          className="rounded-full border-[#e3e3e3] bg-white text-[#111] hover:bg-black/5"
+                          onClick={handleProfileCancel}
+                        >
                           Cancel
                         </Button>
-                        <Button onClick={handleProfileSave} disabled={isSaving}>
+                        <Button
+                          className="rounded-full bg-[#e60023] hover:bg-[#ad081b]"
+                          onClick={handleProfileSave}
+                          disabled={isSaving}
+                        >
                           {isSaving ? "Saving..." : "Save changes"}
                         </Button>
                       </>
                     ) : (
-                      <Button onClick={() => setIsEditingProfile(true)}>
+                      <Button
+                        className="rounded-full bg-[#e60023] hover:bg-[#ad081b]"
+                        onClick={() => setIsEditingProfile(true)}
+                      >
                         Edit Profile
                       </Button>
                     )}
@@ -462,21 +486,21 @@ export default function SettingsPage() {
               {activeSection === "notifications" && (
                 <div className="space-y-6">
                   <div>
-                    <h2 className="text-xl font-semibold text-foreground mb-1">
+                    <h2 className="text-xl font-semibold text-[#111] mb-1">
                       Notification Preferences
                     </h2>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-sm text-[#767676]">
                       Manage how you receive notifications.
                     </p>
                   </div>
 
-                  <Separator />
+                  <Separator className="bg-[#e3e3e3]" />
 
                   <div className="space-y-6">
                     <div className="flex items-center justify-between">
                       <div className="space-y-0.5">
                         <Label>Email notifications</Label>
-                        <p className="text-sm text-muted-foreground">
+                        <p className="text-sm text-[#767676]">
                           Receive email notifications for important updates.
                         </p>
                       </div>
@@ -488,7 +512,7 @@ export default function SettingsPage() {
                     <div className="flex items-center justify-between">
                       <div className="space-y-0.5">
                         <Label>Push notifications</Label>
-                        <p className="text-sm text-muted-foreground">
+                        <p className="text-sm text-[#767676]">
                           Get push notifications on your devices.
                         </p>
                       </div>
@@ -500,7 +524,7 @@ export default function SettingsPage() {
                     <div className="flex items-center justify-between">
                       <div className="space-y-0.5">
                         <Label>Marketing emails</Label>
-                        <p className="text-sm text-muted-foreground">
+                        <p className="text-sm text-[#767676]">
                           Receive emails about new features and promotions.
                         </p>
                       </div>
@@ -512,7 +536,7 @@ export default function SettingsPage() {
                     <div className="flex items-center justify-between">
                       <div className="space-y-0.5">
                         <Label>Weekly digest</Label>
-                        <p className="text-sm text-muted-foreground">
+                        <p className="text-sm text-[#767676]">
                           Get a weekly summary of activity.
                         </p>
                       </div>
@@ -524,7 +548,11 @@ export default function SettingsPage() {
                   </div>
 
                   <div className="flex justify-end gap-4 pt-4">
-                    <Button onClick={handleNotificationSave} disabled={isSaving}>
+                    <Button
+                      className="rounded-full bg-[#e60023] hover:bg-[#ad081b]"
+                      onClick={handleNotificationSave}
+                      disabled={isSaving}
+                    >
                       {isSaving ? "Saving..." : "Save preferences"}
                     </Button>
                   </div>
@@ -535,15 +563,15 @@ export default function SettingsPage() {
               {activeSection === "privacy" && (
                 <div className="space-y-6">
                   <div>
-                    <h2 className="text-xl font-semibold text-foreground mb-1">
+                    <h2 className="text-xl font-semibold text-[#111] mb-1">
                       Privacy & Security
                     </h2>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-sm text-[#767676]">
                       Control your privacy settings and account security.
                     </p>
                   </div>
 
-                  <Separator />
+                  <Separator className="bg-[#e3e3e3]" />
 
                   <div className="space-y-6">
                     <div className="space-y-2">
@@ -566,7 +594,7 @@ export default function SettingsPage() {
                     <div className="flex items-center justify-between">
                       <div className="space-y-0.5">
                         <Label>Show email on profile</Label>
-                        <p className="text-sm text-muted-foreground">
+                        <p className="text-sm text-[#767676]">
                           Allow others to see your email address.
                         </p>
                       </div>
@@ -579,7 +607,7 @@ export default function SettingsPage() {
                     <div className="flex items-center justify-between">
                       <div className="space-y-0.5">
                         <Label>Allow direct messages</Label>
-                        <p className="text-sm text-muted-foreground">
+                        <p className="text-sm text-[#767676]">
                           Let others send you private messages.
                         </p>
                       </div>
@@ -589,25 +617,23 @@ export default function SettingsPage() {
                       />
                     </div>
 
-                    <Separator />
+                    <Separator className="bg-[#e3e3e3]" />
 
                     <div>
-                      <h3 className="text-lg font-medium text-foreground mb-4">
+                      <h3 className="text-lg font-medium text-[#111] mb-4">
                         Danger Zone
                       </h3>
-                      <div className="p-4 border border-destructive/20 rounded-lg bg-destructive/5">
-                        <div className="flex items-center justify-between">
+                      <div className="rounded-xl border border-[#e60023]/20 bg-[#e60023]/5 p-4">
+                        <div className="flex items-center justify-between gap-4">
                           <div>
-                            <p className="font-medium text-foreground">
-                              Delete account
-                            </p>
-                            <p className="text-sm text-muted-foreground">
+                            <p className="font-medium text-[#111]">Delete account</p>
+                            <p className="text-sm text-[#767676]">
                               Permanently delete your account and all data.
                             </p>
                           </div>
                           <Button
-                            variant="destructive"
                             size="sm"
+                            className="shrink-0 rounded-full bg-[#e60023] hover:bg-[#ad081b]"
                             onClick={() =>
                               toast({
                                 title: "Request received",
@@ -615,7 +641,7 @@ export default function SettingsPage() {
                               })
                             }
                           >
-                            <Trash2 className="h-4 w-4 mr-2" />
+                            <Trash2 className="mr-2 h-4 w-4" />
                             Delete
                           </Button>
                         </div>
@@ -624,7 +650,11 @@ export default function SettingsPage() {
                   </div>
 
                   <div className="flex justify-end gap-4 pt-4">
-                    <Button onClick={handlePrivacySave} disabled={isSaving}>
+                    <Button
+                      className="rounded-full bg-[#e60023] hover:bg-[#ad081b]"
+                      onClick={handlePrivacySave}
+                      disabled={isSaving}
+                    >
                       {isSaving ? "Saving..." : "Save settings"}
                     </Button>
                   </div>
@@ -635,39 +665,40 @@ export default function SettingsPage() {
               {activeSection === "appearance" && (
                 <div className="space-y-6">
                   <div>
-                    <h2 className="text-xl font-semibold text-foreground mb-1">
+                    <h2 className="text-xl font-semibold text-[#111] mb-1">
                       Appearance
                     </h2>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-sm text-[#767676]">
                       Customize how the platform looks for you.
                     </p>
                   </div>
 
-                  <Separator />
+                  <Separator className="bg-[#e3e3e3]" />
 
                   <div className="space-y-4">
                     <Label>Theme</Label>
                     <div className="grid grid-cols-3 gap-4">
                       {(["Light", "Dark", "System"] as const).map((themeOption) => (
                         <button
+                          type="button"
                           key={themeOption}
-                          className={`p-4 border rounded-lg text-center transition-colors ${
+                          className={`rounded-xl border p-4 text-center transition-colors ${
                             theme === themeOption
-                              ? "border-primary bg-primary/10"
-                              : "border-border hover:border-muted-foreground"
+                              ? "border-[#e60023] bg-[#e60023]/10"
+                              : "border-[#e3e3e3] hover:border-[#767676]"
                           }`}
                           onClick={() => handleAppearanceChange(themeOption)}
                         >
                           <div
-                            className={`w-full h-20 rounded mb-2 ${
+                            className={`mb-2 h-20 w-full rounded-lg ${
                               themeOption === "Light"
-                                ? "bg-white border"
+                                ? "border border-[#e3e3e3] bg-white"
                                 : themeOption === "Dark"
-                                ? "bg-zinc-900"
-                                : "bg-gradient-to-r from-white to-zinc-900"
+                                  ? "bg-zinc-900"
+                                  : "bg-gradient-to-r from-white to-zinc-900"
                             }`}
                           />
-                          <span className="text-sm font-medium">{themeOption}</span>
+                          <span className="text-sm font-medium text-[#111]">{themeOption}</span>
                         </button>
                       ))}
                     </div>
@@ -679,15 +710,15 @@ export default function SettingsPage() {
               {activeSection === "language" && (
                 <div className="space-y-6">
                   <div>
-                    <h2 className="text-xl font-semibold text-foreground mb-1">
+                    <h2 className="text-xl font-semibold text-[#111] mb-1">
                       Language & Region
                     </h2>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-sm text-[#767676]">
                       Set your preferred language and regional settings.
                     </p>
                   </div>
 
-                  <Separator />
+                  <Separator className="bg-[#e3e3e3]" />
 
                   <div className="grid gap-6 sm:grid-cols-2">
                     <div className="space-y-2">
@@ -753,7 +784,11 @@ export default function SettingsPage() {
                   </div>
 
                   <div className="flex justify-end gap-4 pt-4">
-                    <Button onClick={handleLanguageSave} disabled={isSaving}>
+                    <Button
+                      className="rounded-full bg-[#e60023] hover:bg-[#ad081b]"
+                      onClick={handleLanguageSave}
+                      disabled={isSaving}
+                    >
                       {isSaving ? "Saving..." : "Save settings"}
                     </Button>
                   </div>
@@ -762,7 +797,8 @@ export default function SettingsPage() {
             </motion.div>
           </div>
         </div>
-      </div>
+      </main>
+      <Footer />
     </div>
   )
 }

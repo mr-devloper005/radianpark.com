@@ -60,14 +60,30 @@ export function TaskListClient({ task, initialPosts, category }: Props) {
     );
   }
 
+  const masonry = task === "image" || task === "profile";
+
   return (
-    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+    <div
+      className={
+        masonry
+          ? "masonry-feed"
+          : "grid gap-6 sm:grid-cols-2 lg:grid-cols-4"
+      }
+    >
       {merged.map((post) => {
         const localOnly = (post as any).localOnly;
         const href = localOnly
           ? `/local/${task}/${post.slug}`
           : buildPostUrl(task, post.slug);
-        return <TaskPostCard key={post.id} post={post} href={href} taskKey={task} />;
+        return (
+          <TaskPostCard
+            key={post.id}
+            post={post}
+            href={href}
+            taskKey={task}
+            compact={masonry}
+          />
+        );
       })}
     </div>
   );

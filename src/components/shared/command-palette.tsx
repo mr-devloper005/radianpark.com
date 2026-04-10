@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator } from '@/components/ui/command'
 import { useToast } from '@/components/ui/use-toast'
+import { useAuth } from '@/lib/auth-context'
 import { FileText, Plus, Tag, Bookmark, Settings, Search } from 'lucide-react'
 
 const quickLinks = [
@@ -23,7 +24,21 @@ const createActions = [
 export function CommandPalette() {
   const router = useRouter()
   const { toast } = useToast()
+  const { isAuthenticated, authHydrated } = useAuth()
   const [open, setOpen] = useState(false)
+
+  const goCreate = (href: string) => {
+    if (!authHydrated) {
+      toast({ title: 'One moment', description: 'Checking your session…' })
+      return
+    }
+    if (!isAuthenticated) {
+      router.push(`/login?from=${encodeURIComponent(href)}`)
+    } else {
+      router.push(href)
+    }
+    setOpen(false)
+  }
 
   useEffect(() => {
     const handler = (event: KeyboardEvent) => {
@@ -62,10 +77,7 @@ export function CommandPalette() {
           {createActions.map((item) => (
             <CommandItem
               key={item.href}
-              onSelect={() => {
-                router.push(item.href)
-                setOpen(false)
-              }}
+              onSelect={() => goCreate(item.href)}
             >
               <item.icon className="mr-2 h-4 w-4" />
               {item.label}
