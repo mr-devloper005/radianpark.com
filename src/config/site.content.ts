@@ -29,13 +29,20 @@ export const siteContent = {
   },
   home: {
     metadata: {
-      title: 'Stories, visuals, and discoverable content',
+      title: 'Image sharing, creator profiles, and visual discovery',
       description:
-        'Explore articles, images, listings, and curated posts through a cleaner reading-first experience.',
-      openGraphTitle: 'Stories, visuals, and discoverable content',
+        'Share photos, build your social profile, and explore a premium masonry feed—built for creators and visual discovery.',
+      openGraphTitle: 'Image sharing, creator profiles, and visual discovery',
       openGraphDescription:
-        'Discover articles, visual posts, and connected content through a calmer reading-first experience.',
-      keywords: ['story platform', 'article site', 'visual content', 'content discovery'],
+        'Where images, ideas, and creators meet. Explore trending visuals, profiles, and community in one place.',
+      keywords: [
+        'image sharing',
+        'creator profiles',
+        'visual discovery',
+        'photo community',
+        'social profiles',
+        'masonry feed',
+      ],
     },
     introBadge: 'About the platform',
     introTitle: 'Built for reading, browsing, and connecting different kinds of content.',
@@ -93,11 +100,11 @@ export const taskPageMetadata: Record<Exclude<TaskKey, 'comment' | 'org' | 'soci
   },
   image: {
     title: 'Image sharing and visual posts',
-    description: 'Explore image-led posts, galleries, and visual stories from across the platform.',
+    description: 'Browse a masonry feed of shared photos and pins, explore creator profiles, and discover visual ideas.',
   },
   profile: {
-    title: 'Profiles and public pages',
-    description: 'Discover public profiles, brand pages, and identity-focused posts in one place.',
+    title: 'Profiles and creator pages',
+    description: 'Discover creator and brand profiles behind the images you love, then explore more of their shared photos.',
   },
   sbm: {
     title: 'Curated links and saved resources',
@@ -153,30 +160,26 @@ export const taskIntroCopy: Record<
     ],
   },
   image: {
-    title: 'Image-led posts and visual stories',
+    title: 'Image sharing and visual discovery',
     paragraphs: [
-      'Image sharing highlights visual posts, galleries, and story-led content where imagery plays the lead role.',
-      'These posts connect with articles, listings, and other sections so visuals can act as entry points into deeper content.',
-      'Browse the latest visual updates, then continue into related stories or supporting pages for more context.',
+      'This feed is built for photos, mood boards, and visual posts—a Pinterest-style grid so you can scan ideas quickly and save what stands out.',
+      'Open any tile for the full pin, explore captions and tags, and jump to a creator profile when you want more from the same source.',
+      'Keep scrolling for fresh visuals, or use the actions below to explore profiles, share your own image, or search the site.',
     ],
     links: [
-      { label: 'Read articles', href: '/articles' },
-      { label: 'Explore listings', href: '/listings' },
-      { label: 'Open classifieds', href: '/classifieds' },
+      { label: 'Explore profiles', href: '/profile' },
+      { label: 'Share an image', href: '/create/image' },
+      { label: 'Search', href: '/search' },
     ],
   },
   profile: {
-    title: 'Profiles, identities, and public pages',
+    title: 'Creators, profiles, and public pages',
     paragraphs: [
-      'Profiles capture the identity behind a business, creator, brand, or project and help visitors understand who is behind the content they are exploring.',
-      'These pages work as trust anchors across the site and connect naturally with stories, listings, documents, and other post types.',
-      'Browse profiles to understand people and brands more clearly, then continue into related content from the same source.',
+      'Profiles put a face and story behind the images you discover—bios, links, and a consistent identity so image sharing feels personal and easy to trust.',
+      'They anchor the rest of the experience: open a profile from the feed to see more of their visual style, then jump straight into their shared photos and pins in the same layout.',
+      'Browse profiles to find creators and brands to follow, then keep exploring their image sharing without leaving the calm, Pinterest-style rhythm of the site.',
     ],
-    links: [
-      { label: 'Open listings', href: '/listings' },
-      { label: 'Read articles', href: '/articles' },
-      { label: 'Browse image sharing', href: '/image-sharing' },
-    ],
+    links: [{ label: 'Browse image sharing', href: '/image-sharing' }],
   },
   sbm: {
     title: 'Curated links and bookmarked resources',
@@ -205,16 +208,16 @@ export const taskIntroCopy: Record<
     ],
   },
   social: {
-    title: 'Short updates and community signals',
+    title: 'Community and quick updates',
     paragraphs: [
-      'Short updates add quick signals that keep activity flowing across the platform.',
-      'They work well with stories, listings, and resources by helping visitors move from brief updates into deeper content.',
-      'Use these posts as lightweight entry points into the broader site experience.',
+      'Community is where short posts and lightweight updates sit next to the main image feed—quick signals from creators without opening a full pin.',
+      'Updates connect to profiles and image sharing so you can move from a brief note into photos, boards, and the people behind them.',
+      'Use this space to see what is active, who is posting, and what to explore next in the same calm, Pinterest-style flow as the rest of the site.',
     ],
     links: [
-      { label: 'Open listings', href: '/listings' },
-      { label: 'Read articles', href: '/articles' },
-      { label: 'View PDFs', href: '/pdf' },
+      { label: 'Browse image sharing', href: '/image-sharing' },
+      { label: 'Explore profiles', href: '/profile' },
+      { label: 'Search', href: '/search' },
     ],
   },
   comment: {

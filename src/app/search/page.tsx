@@ -76,41 +76,52 @@ export default async function SearchPage({
       description={
         query
           ? `Results for "${query}"`
-          : "Browse the latest posts across every task."
+          : "Find ideas, creators, and posts across image sharing and profiles."
       }
       actions={
-        <form action="/search" className="flex w-full gap-2 sm:w-auto">
+        <form
+          action="/search"
+          className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:items-center"
+        >
           <input type="hidden" name="master" value="1" />
           {category ? <input type="hidden" name="category" value={category} /> : null}
           {task ? <input type="hidden" name="task" value={task} /> : null}
-          <div className="relative w-full sm:w-80">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <div className="relative flex h-12 w-full min-w-0 items-center rounded-full border border-[#e3e3e3] bg-[#f1f1f1] pl-4 pr-2 transition-colors focus-within:bg-[#ececec] sm:w-80">
+            <Search className="pointer-events-none h-5 w-5 shrink-0 text-[#5f5f5f]" aria-hidden />
             <Input
               name="q"
               defaultValue={query}
-              placeholder="Search across tasks..."
-              className="h-11 pl-9"
+              placeholder="Search ideas, creators, and images"
+              className="h-full min-w-0 flex-1 border-0 bg-transparent pl-3 pr-2 text-sm text-[#111] placeholder:text-[#767676] shadow-none focus-visible:ring-0"
             />
           </div>
-          <Button type="submit" className="h-11">
+          <Button
+            type="submit"
+            className="h-12 shrink-0 rounded-full bg-[#e60023] px-6 text-sm font-semibold text-white hover:bg-[#ad081b]"
+          >
             Search
           </Button>
         </form>
       }
     >
-      {results.length ? (
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {results.map((post) => {
-            const task = getPostTaskKey(post);
-            const href = task ? buildPostUrl(task, post.slug) : `/posts/${post.slug}`;
-            return <TaskPostCard key={post.id} post={post} href={href} />;
-          })}
-        </div>
-      ) : (
-        <div className="rounded-2xl border border-dashed border-border p-10 text-center text-muted-foreground">
-          No matching posts yet.
-        </div>
-      )}
+      <div className="rounded-3xl border border-[#e3e3e3] bg-white p-5 shadow-sm sm:p-8">
+        {results.length ? (
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
+            {results.map((post) => {
+              const task = getPostTaskKey(post);
+              const href = task ? buildPostUrl(task, post.slug) : `/posts/${post.slug}`;
+              return <TaskPostCard key={post.id} post={post} href={href} />;
+            })}
+          </div>
+        ) : (
+          <div className="rounded-2xl border border-dashed border-[#e3e3e3] bg-[#fafafa] px-6 py-14 text-center">
+            <p className="text-sm font-medium text-[#111]">No matching posts yet</p>
+            <p className="mt-2 text-sm text-[#767676]">
+              Try different keywords or browse image sharing and profiles from the home page.
+            </p>
+          </div>
+        )}
+      </div>
     </PageShell>
   );
 }

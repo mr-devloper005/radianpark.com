@@ -4,6 +4,7 @@ import { ArrowUpRight, ExternalLink, FileText, Mail, MapPin, Tag } from 'lucide-
 import type { SitePost } from '@/lib/site-connector'
 import { CATEGORY_OPTIONS, normalizeCategory } from '@/lib/categories'
 import type { TaskKey } from '@/lib/site-config'
+import { cn } from '@/lib/utils'
 import { SITE_THEME } from '@/config/site.theme'
 import { getFactoryState } from '@/design/factory/get-factory-state'
 import { TASK_POST_CARD_OVERRIDE_ENABLED, TaskPostCardOverride } from '@/overrides/task-post-card'
@@ -156,6 +157,42 @@ export function TaskPostCard({
             {content.email ? <span className={`inline-flex items-center gap-1 ${cardTone.muted}`}><Mail className="h-3.5 w-3.5" />{content.email}</span> : null}
           </div>
           <div className={`mt-auto pt-5 text-sm font-semibold ${cardTone.cta}`}>{variant === 'classified' ? 'View offer' : 'View details'}</div>
+        </div>
+      </Link>
+    )
+  }
+
+  const isPinBoard =
+    (variant === 'image' || variant === 'profile') && !isDirectorySurface && !isBookmarkVariant
+
+  if (isPinBoard) {
+    const aspects = ['aspect-[3/4]', 'aspect-[4/5]', 'aspect-[5/7]', 'aspect-square'] as const
+    const aspectClass = aspects[(post.id?.charCodeAt(0) ?? 0) % aspects.length]
+
+    return (
+      <Link
+        href={href}
+        className="group block overflow-hidden rounded-2xl bg-white shadow-[0_1px_3px_rgba(0,0,0,0.12)] transition-shadow duration-200 hover:shadow-[0_4px_12px_rgba(0,0,0,0.15)]"
+      >
+        <div className={cn('relative w-full overflow-hidden bg-[#e9e9e9]', aspectClass)}>
+          <ContentImage
+            src={image}
+            alt={altText}
+            fill
+            sizes="(max-width: 640px) 45vw, (max-width: 1024px) 30vw, 18vw"
+            quality={80}
+            className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+            intrinsicWidth={960}
+            intrinsicHeight={720}
+          />
+        </div>
+        <div className="px-3 py-3">
+          <h3 className="line-clamp-2 text-sm font-semibold leading-snug text-[#111]">{post.title}</h3>
+          {compact ? null : (
+            <p className="mt-1 line-clamp-2 text-xs leading-5 text-[#767676]">
+              {getExcerpt(content.description || post.summary, 90) || 'Tap to view'}
+            </p>
+          )}
         </div>
       </Link>
     )

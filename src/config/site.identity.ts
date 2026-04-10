@@ -1,10 +1,10 @@
 export const siteIdentity = {
   code: process.env.NEXT_PUBLIC_SITE_CODE || 'radianpark',
   name: process.env.NEXT_PUBLIC_SITE_NAME || 'Radian Park',
-  tagline: process.env.NEXT_PUBLIC_SITE_TAGLINE || 'Business listing platform',
+  tagline: process.env.NEXT_PUBLIC_SITE_TAGLINE || 'Image sharing & social profiles',
   description:
     process.env.NEXT_PUBLIC_SITE_DESCRIPTION ||
-    'A listing-first business discovery platform for browsing services, businesses, spaces, and location-based opportunities through a cleaner browsing experience.',
+    'Share photos, discover visual inspiration, and follow creator profiles in a calm, Pinterest-inspired experience built for community and self-expression.',
   domain: process.env.NEXT_PUBLIC_SITE_DOMAIN || 'radianpark.com',
   url: process.env.NEXT_PUBLIC_SITE_URL || 'https://radianpark.com',
   ogImage: process.env.NEXT_PUBLIC_SITE_OG_IMAGE || '/og-default.png',

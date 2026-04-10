@@ -5,6 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, Plus, Save } from "lucide-react";
 import { NavbarShell } from "@/components/shared/navbar-shell";
+import { Footer } from "@/components/shared/footer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -165,7 +166,7 @@ const FORM_CONFIG: Record<TaskKey, { title: string; description: string; fields:
 };
 
 export default function CreateTaskPage() {
-  const { user } = useAuth();
+  const { user, authHydrated } = useAuth();
   const { toast } = useToast();
   const router = useRouter();
   const params = useParams();
@@ -182,17 +183,66 @@ export default function CreateTaskPage() {
 
   if (!taskConfig || !formConfig) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-[#f1f1f1] text-[#111]">
         <NavbarShell />
         <main className="mx-auto max-w-3xl px-4 py-16 text-center">
-          <h1 className="text-2xl font-semibold text-foreground">Task not available</h1>
-          <p className="mt-2 text-muted-foreground">
-            This task is not enabled for the current site.
-          </p>
-          <Button className="mt-6" asChild>
+          <h1 className="text-2xl font-semibold text-[#111]">Task not available</h1>
+          <p className="mt-2 text-sm text-[#767676]">This task is not enabled for the current site.</p>
+          <Button className="mt-6 rounded-full bg-[#e60023] hover:bg-[#ad081b]" asChild>
             <Link href="/">Back home</Link>
           </Button>
         </main>
+        <Footer />
+      </div>
+    );
+  }
+
+  const createPath = `/create/${taskKey}`;
+  const loginWithReturn = `/login?from=${encodeURIComponent(createPath)}`;
+  const registerWithReturn = `/register?from=${encodeURIComponent(createPath)}`;
+
+  if (!authHydrated) {
+    return (
+      <div className="min-h-screen bg-[#f1f1f1] text-[#111]">
+        <NavbarShell />
+        <main className="mx-auto flex min-h-[50vh] max-w-lg flex-col items-center justify-center px-4 py-16 text-center">
+          <p className="text-sm text-[#767676]">Loading…</p>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (!user) {
+    return (
+      <div className="min-h-screen bg-[#f1f1f1] text-[#111]">
+        <NavbarShell />
+        <main className="mx-auto max-w-lg px-4 py-16 sm:px-6">
+          <div className="rounded-3xl border border-[#e3e3e3] bg-white p-8 text-center shadow-sm">
+            <h1 className="text-2xl font-semibold text-[#111]">Sign in to create</h1>
+            <p className="mt-3 text-sm leading-relaxed text-[#767676]">
+              Log in or create an account to add posts and share content. Creating is available only after you sign in.
+            </p>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center">
+              <Button className="rounded-full bg-[#e60023] hover:bg-[#ad081b]" asChild>
+                <Link href={loginWithReturn}>Log in</Link>
+              </Button>
+              <Button
+                variant="outline"
+                className="rounded-full border-[#e3e3e3] bg-white text-[#111] hover:bg-black/5"
+                asChild
+              >
+                <Link href={registerWithReturn}>Sign up</Link>
+              </Button>
+            </div>
+            <p className="mt-6 text-sm text-[#767676]">
+              <Link href="/" className="font-semibold text-[#111] hover:underline">
+                ← Back to home
+              </Link>
+            </p>
+          </div>
+        </main>
+        <Footer />
       </div>
     );
   }
@@ -271,25 +321,29 @@ export default function CreateTaskPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-[#f1f1f1] text-[#111]">
       <NavbarShell />
       <main className="mx-auto max-w-4xl px-4 py-12">
         <div className="mb-8 flex items-center gap-3">
-          <Button variant="ghost" size="icon" asChild>
+          <Button variant="ghost" size="icon" asChild className="rounded-full text-[#111] hover:bg-black/8">
             <Link href="/">
               <ArrowLeft className="h-5 w-5" />
             </Link>
           </Button>
           <div>
-            <h1 className="text-2xl font-semibold text-foreground">{formConfig.title}</h1>
-            <p className="text-sm text-muted-foreground">{formConfig.description}</p>
+            <h1 className="text-2xl font-semibold text-[#111]">{formConfig.title}</h1>
+            <p className="text-sm text-[#767676]">{formConfig.description}</p>
           </div>
         </div>
 
-        <div className="rounded-3xl border border-border bg-card p-8 shadow-sm">
+        <div className="rounded-3xl border border-[#e3e3e3] bg-white p-8 shadow-sm">
           <div className="flex flex-wrap gap-2">
-            <Badge variant="secondary">{taskConfig.label}</Badge>
-            <Badge variant="outline">Local-only</Badge>
+            <Badge variant="secondary" className="border-[#e3e3e3] bg-[#f1f1f1] text-[#111]">
+              {taskConfig.label}
+            </Badge>
+            <Badge variant="outline" className="border-[#e3e3e3] text-[#767676]">
+              Local-only
+            </Badge>
           </div>
 
           <div className="mt-6 grid gap-6">
@@ -304,13 +358,13 @@ export default function CreateTaskPage() {
                     placeholder={field.placeholder}
                     value={values[field.key] || ""}
                     onChange={(event) => updateValue(field.key, event.target.value)}
-                    className="border-2 border-slate-200 bg-white focus-visible:ring-2 focus-visible:ring-primary/30"
+                    className="border border-[#e3e3e3] bg-white focus-visible:ring-2 focus-visible:ring-[#e60023]/25"
                   />
                 ) : field.type === "category" ? (
                   <select
                     value={values[field.key] || ""}
                     onChange={(event) => updateValue(field.key, event.target.value)}
-                    className="h-11 rounded-lg border-2 border-slate-200 bg-white px-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30"
+                    className="h-11 rounded-xl border border-[#e3e3e3] bg-white px-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e60023]/25"
                   >
                     <option value="">Select category</option>
                     {CATEGORY_OPTIONS.map((option) => (
@@ -355,7 +409,7 @@ export default function CreateTaskPage() {
                       onChange={(event) => updateValue(field.key, event.target.value)}
                     />
                     {uploadingPdf ? (
-                      <p className="text-xs text-muted-foreground">Uploading PDF…</p>
+                      <p className="text-xs text-[#767676]">Uploading PDF…</p>
                     ) : null}
                   </div>
                 ) : (
@@ -368,7 +422,7 @@ export default function CreateTaskPage() {
                     }
                     value={values[field.key] || ""}
                     onChange={(event) => updateValue(field.key, event.target.value)}
-                    className="h-11 border-2 border-slate-200 bg-white focus-visible:ring-2 focus-visible:ring-primary/30"
+                    className="h-11 border border-[#e3e3e3] bg-white focus-visible:ring-2 focus-visible:ring-[#e60023]/25"
                   />
                 )}
               </div>
@@ -376,11 +430,14 @@ export default function CreateTaskPage() {
           </div>
 
           <div className="mt-8 flex flex-wrap gap-3">
-            <Button onClick={handleSubmit}>
+            <Button
+              onClick={handleSubmit}
+              className="rounded-full bg-[#e60023] hover:bg-[#ad081b]"
+            >
               <Save className="mr-2 h-4 w-4" />
               Save locally
             </Button>
-            <Button variant="ghost" asChild>
+            <Button variant="ghost" asChild className="rounded-full text-[#111] hover:bg-black/8">
               <Link href={taskConfig.route}>
                 View {taskConfig.label}
                 <Plus className="ml-2 h-4 w-4" />
@@ -389,6 +446,7 @@ export default function CreateTaskPage() {
           </div>
         </div>
       </main>
+      <Footer />
     </div>
   );
 }
