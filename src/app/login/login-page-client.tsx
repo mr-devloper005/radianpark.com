@@ -16,8 +16,8 @@ export function LoginPageClient() {
         <NavbarShell />
         <main className="mx-auto flex max-w-lg flex-col px-4 py-16 sm:px-6">
           <div className="mb-10 text-center">
-            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-[#e60023]">
-              <img src="/favicon.png?v=20260401" alt="" className="h-9 w-9 object-contain brightness-0 invert" />
+            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-[#F9F6F1] ring-1 ring-[#A68955]/35">
+              <img src="/favicon.png?v=20260413" alt="" className="h-10 w-10 object-contain" />
             </div>
             <h1 className="text-3xl font-bold tracking-tight">Welcome to {SITE_CONFIG.name}</h1>
             <p className="mt-2 text-sm text-[#767676]">Log in to save images and manage your profile.</p>

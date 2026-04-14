@@ -1,6 +1,5 @@
 import { Building2, FileText, Image as ImageIcon, Mail, MapPin, Phone, Sparkles, Bookmark } from 'lucide-react'
-import { NavbarShell } from '@/components/shared/navbar-shell'
-import { Footer } from '@/components/shared/footer'
+import { LuxuryBrandShell } from '@/components/shared/luxury-brand-shell'
 import { SITE_CONFIG } from '@/lib/site-config'
 import { getFactoryState } from '@/design/factory/get-factory-state'
 import { getProductKind } from '@/design/factory/get-product-kind'
@@ -18,18 +17,18 @@ export default function ContactPage() {
       ? [
           {
             icon: Building2,
-            title: 'Business onboarding',
-            body: 'Add listings, verify operational details, and bring your business surface live quickly.',
+            title: 'Buyer & seller advisory',
+            body: 'Private tours, pricing strategy, and negotiation support for residential and mixed-use assets.',
           },
           {
             icon: Phone,
-            title: 'Partnership support',
-            body: 'Talk through bulk publishing, local growth, and operational setup questions.',
+            title: 'Institutional & developer desk',
+            body: 'Portfolio reviews, capital introductions, and launch planning for marquee developments.',
           },
           {
             icon: MapPin,
-            title: 'Coverage requests',
-            body: 'Need a new geography or category lane? We can shape the directory around it.',
+            title: 'New market coverage',
+            body: 'Request research packs or on-site diligence for geographies we are actively mapping.',
           },
         ]
       : productKind === 'editorial'
@@ -87,62 +86,85 @@ export default function ContactPage() {
             ]
 
   return (
-    <div className="min-h-screen bg-[#f1f1f1] text-[#111]">
-      <NavbarShell />
-      <main className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
-        <section className="grid gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
+    <LuxuryBrandShell
+      eyebrow="Contact"
+      title={`Speak with ${SITE_CONFIG.name}`}
+      description="Share a few details about your goals—acquisition, disposition, leasing, or research—and we will route your message to the right specialist."
+    >
+      <div className="grid gap-12 lg:grid-cols-[1fr_1.05fr] lg:items-start">
+        <div className="space-y-8">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#767676]">
-              Contact {SITE_CONFIG.name}
+            <h2 className="font-display text-2xl font-semibold text-[#1D2B3A] sm:text-3xl">Ways we can help</h2>
+            <p className="mt-3 text-sm leading-7 text-[#1D2B3A]/70">
+              Every inquiry is reviewed by a human advisor. Expect a thoughtful first response—not an automated ticket
+              queue.
             </p>
-            <h1 className="mt-4 text-4xl font-bold tracking-tight text-[#111] sm:text-5xl">
-              Get in touch
-            </h1>
-            <p className="mt-5 max-w-2xl text-sm leading-8 text-[#767676]">
-              Tell us what you are trying to publish, fix, or launch. We will route it through the right lane instead
-              of forcing every request into the same support bucket.
-            </p>
-            <div className="mt-8 space-y-4">
-              {lanes.map((lane) => (
-                <div key={lane.title} className="rounded-3xl border border-[#ececec] bg-[#fafafa] p-5">
-                  <lane.icon className="h-5 w-5 text-[#111]" />
-                  <h2 className="mt-3 text-xl font-semibold text-[#111]">{lane.title}</h2>
-                  <p className="mt-2 text-sm leading-7 text-[#767676]">{lane.body}</p>
-                </div>
-              ))}
-            </div>
           </div>
-
-          <div className="rounded-3xl border border-[#e3e3e3] bg-white p-7 shadow-sm">
-            <h2 className="text-2xl font-semibold text-[#111]">Send a message</h2>
-            <form className="mt-6 grid gap-4">
-              <input
-                className="h-12 w-full rounded-xl border border-[#e3e3e3] bg-white px-4 text-sm text-[#111] placeholder:text-[#767676] focus:outline-none focus:ring-2 focus:ring-[#e60023]/25"
-                placeholder="Your name"
-              />
-              <input
-                className="h-12 w-full rounded-xl border border-[#e3e3e3] bg-white px-4 text-sm text-[#111] placeholder:text-[#767676] focus:outline-none focus:ring-2 focus:ring-[#e60023]/25"
-                placeholder="Email address"
-              />
-              <input
-                className="h-12 w-full rounded-xl border border-[#e3e3e3] bg-white px-4 text-sm text-[#111] placeholder:text-[#767676] focus:outline-none focus:ring-2 focus:ring-[#e60023]/25"
-                placeholder="What do you need help with?"
-              />
-              <textarea
-                className="min-h-[180px] w-full rounded-2xl border border-[#e3e3e3] bg-white px-4 py-3 text-sm text-[#111] placeholder:text-[#767676] focus:outline-none focus:ring-2 focus:ring-[#e60023]/25"
-                placeholder="Share the full context so we can respond with the right next step."
-              />
-              <button
-                type="submit"
-                className="inline-flex h-12 w-full items-center justify-center rounded-full bg-[#e60023] px-6 text-sm font-semibold text-white hover:bg-[#ad081b]"
+          <ul className="space-y-4">
+            {lanes.map((lane) => (
+              <li
+                key={lane.title}
+                className="flex gap-4 rounded-3xl border border-[#A68955]/20 bg-white p-5 shadow-sm transition-shadow hover:shadow-md"
               >
-                Send message
-              </button>
-            </form>
-          </div>
-        </section>
-      </main>
-      <Footer />
-    </div>
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-[#A68955]/30 bg-[#F9F6F1]">
+                  <lane.icon className="h-5 w-5 text-[#A68955]" aria-hidden />
+                </span>
+                <div>
+                  <h3 className="font-display text-lg font-semibold text-[#1D2B3A]">{lane.title}</h3>
+                  <p className="mt-1 text-sm leading-7 text-[#1D2B3A]/70">{lane.body}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="rounded-3xl border border-[#A68955]/25 bg-white p-7 shadow-sm sm:p-9">
+          <h2 className="font-display text-2xl font-semibold text-[#1D2B3A]">Send a message</h2>
+          <p className="mt-2 text-sm text-[#1D2B3A]/65">
+            Fields below are for planning only; submitting does not create a client relationship until confirmed in
+            writing.
+          </p>
+          <form className="mt-8 grid gap-4">
+            <label className="grid gap-1.5 text-sm">
+              <span className="font-medium text-[#1D2B3A]">Full name</span>
+              <input
+                className="h-12 w-full rounded-xl border border-[#A68955]/25 bg-[#F9F6F1]/50 px-4 text-sm text-[#1D2B3A] placeholder:text-[#1D2B3A]/40 focus:border-[#A68955] focus:outline-none focus:ring-2 focus:ring-[#A68955]/25"
+                placeholder="Your name"
+                autoComplete="name"
+              />
+            </label>
+            <label className="grid gap-1.5 text-sm">
+              <span className="font-medium text-[#1D2B3A]">Email</span>
+              <input
+                type="email"
+                className="h-12 w-full rounded-xl border border-[#A68955]/25 bg-[#F9F6F1]/50 px-4 text-sm text-[#1D2B3A] placeholder:text-[#1D2B3A]/40 focus:border-[#A68955] focus:outline-none focus:ring-2 focus:ring-[#A68955]/25"
+                placeholder="you@example.com"
+                autoComplete="email"
+              />
+            </label>
+            <label className="grid gap-1.5 text-sm">
+              <span className="font-medium text-[#1D2B3A]">Topic</span>
+              <input
+                className="h-12 w-full rounded-xl border border-[#A68955]/25 bg-[#F9F6F1]/50 px-4 text-sm text-[#1D2B3A] placeholder:text-[#1D2B3A]/40 focus:border-[#A68955] focus:outline-none focus:ring-2 focus:ring-[#A68955]/25"
+                placeholder="e.g. Off-market acquisition in Mumbai"
+              />
+            </label>
+            <label className="grid gap-1.5 text-sm">
+              <span className="font-medium text-[#1D2B3A]">How can we help?</span>
+              <textarea
+                className="min-h-[168px] w-full rounded-2xl border border-[#A68955]/25 bg-[#F9F6F1]/50 px-4 py-3 text-sm text-[#1D2B3A] placeholder:text-[#1D2B3A]/40 focus:border-[#A68955] focus:outline-none focus:ring-2 focus:ring-[#A68955]/25"
+                placeholder="Share context: timeline, budget range, property type, and the outcome you are seeking."
+              />
+            </label>
+            <button
+              type="submit"
+              className="inline-flex h-12 w-full items-center justify-center rounded-full bg-[#A68955] px-6 text-sm font-semibold text-[#1D2B3A] transition-colors hover:bg-[#b89968]"
+            >
+              Submit inquiry
+            </button>
+          </form>
+        </div>
+      </div>
+    </LuxuryBrandShell>
   )
 }
