@@ -6,10 +6,10 @@ import { useParams } from "next/navigation";
 import { MapPin, Globe, Phone, Tag, Mail } from "lucide-react";
 import { NavbarShell } from "@/components/shared/navbar-shell";
 import { Footer } from "@/components/shared/footer";
-import { TaskImageCarousel } from "@/components/tasks/task-image-carousel";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ContentImage } from "@/components/shared/content-image";
+import { DedupedImageGallery } from "@/components/tasks/deduped-image-gallery";
 import { RichContent, formatRichHtml } from "@/components/shared/rich-content";
 import { SITE_CONFIG, type TaskKey } from "@/lib/site-config";
 import { getLocalPostBySlug } from "@/lib/local-posts";
@@ -33,6 +33,28 @@ type PostContent = {
 const isValidImageUrl = (value?: string | null) =>
   typeof value === "string" && (value.startsWith("/") || /^https?:\/\//i.test(value));
 
+const normalizeImageKey = (value: string) =>
+  value
+    .trim()
+    .replace(/[?#].*$/, "")
+    .replace(/\/+$/, "")
+    .toLowerCase();
+
+const getImageFingerprint = (value: string) => {
+  const normalized = normalizeImageKey(value);
+  const parts = normalized.split("/");
+  const fileName = parts[parts.length - 1] || normalized;
+  const withoutExtension = fileName.replace(/\.[a-z0-9]+$/i, "");
+  const cleanedStem = withoutExtension
+    .replace(/-\d{2,4}x\d{2,4}$/i, "")
+    .replace(/[-_](copy|edited|final|new|compressed|large|small|thumb|thumbnail)$/i, "")
+    .replace(/[-_]\d+$/i, "")
+    .replace(/[^a-z0-9]+/gi, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "");
+  return cleanedStem || withoutExtension || fileName || normalized;
+};
+
 const getContent = (post: any): PostContent => {
   const content = post?.content && typeof post.content === "object" ? post.content : {};
   return content as PostContent;
@@ -46,7 +68,15 @@ const getImageUrls = (post: any, content: PostContent) => {
   const contentImages = Array.isArray(content.images)
     ? content.images.filter((url): url is string => isValidImageUrl(url))
     : [];
-  const merged = [...mediaImages, ...contentImages];
+  const preferredSource = contentImages.length ? contentImages : mediaImages;
+  const seen = new Set<string>();
+  const merged = preferredSource.filter((url) => {
+    const keys = [normalizeImageKey(url), getImageFingerprint(url)];
+    const isDuplicate = keys.some((key) => seen.has(key));
+    if (isDuplicate) return false;
+    keys.forEach((key) => seen.add(key));
+    return true;
+  });
   if (merged.length) return merged;
   if (isValidImageUrl(content.logo)) return [content.logo as string];
   return ["/placeholder.svg?height=900&width=1400"];
@@ -98,6 +128,14 @@ const buildMapEmbedUrl = (
   return null;
 };
 
+const stripHtml = (value?: string | null) =>
+  (value || "")
+    .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, " ")
+    .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, " ")
+    .replace(/<\/?[^>]+>/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+
 export default function LocalPostDetailPage() {
   const params = useParams();
   const task = params?.task as TaskKey;
@@ -132,6 +170,7 @@ export default function LocalPostDetailPage() {
   const images = getImageUrls(post, content);
   const isArticle = task === "article";
   const isPdf = task === "pdf";
+  const isImageTask = task === "image";
   const mapEmbedUrl = buildMapEmbedUrl(content.latitude, content.longitude, location);
 
   return (
@@ -179,7 +218,13 @@ export default function LocalPostDetailPage() {
         ) : (
           <div className="grid gap-10 lg:grid-cols-[2fr_1fr]">
             <div>
-              <TaskImageCarousel images={images} />
+              {images[0] ? (
+                <div className="overflow-hidden rounded-3xl border border-border bg-muted">
+                  <div className="relative aspect-[16/10] w-full">
+                    <ContentImage src={images[0]} alt={post.title} fill className="object-cover" />
+                  </div>
+                </div>
+              ) : null}
               <div className="mt-6">
                 <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
                   <Badge variant="secondary" className="inline-flex items-center gap-1">
@@ -195,6 +240,14 @@ export default function LocalPostDetailPage() {
                 </div>
                 <h1 className="mt-4 text-3xl font-semibold text-foreground">{post.title}</h1>
                 <RichContent html={descriptionHtml} className="mt-3 max-w-3xl" />
+                {isImageTask && images.length > 1 ? (
+                  <DedupedImageGallery
+                    images={images.slice(1)}
+                    title={post.title}
+                    cardClassName="overflow-hidden rounded-[1.5rem] border border-border bg-card"
+                    excludeSrc={images[0]}
+                  />
+                ) : null}
               </div>
             </div>
             <div className="space-y-4">
@@ -238,6 +291,26 @@ export default function LocalPostDetailPage() {
                       <MapPin className="mt-0.5 h-4 w-4" />
                       <span>{location}</span>
                     </div>
+                  ) : null}
+                  {!content.website && !content.phone && !content.email && !location ? (
+                    <>
+                      <div className="flex items-start justify-between gap-4 rounded-xl border border-border bg-background px-4 py-3">
+                        <span className="font-medium text-foreground">Category</span>
+                        <span>{category}</span>
+                      </div>
+                      <div className="flex items-start justify-between gap-4 rounded-xl border border-border bg-background px-4 py-3">
+                        <span className="font-medium text-foreground">Type</span>
+                        <span>{taskConfig.label}</span>
+                      </div>
+                      <div className="flex items-start justify-between gap-4 rounded-xl border border-border bg-background px-4 py-3">
+                        <span className="font-medium text-foreground">Images</span>
+                        <span>{images.length}</span>
+                      </div>
+                      <div className="rounded-xl border border-border bg-background px-4 py-3">
+                        <p className="font-medium text-foreground">Summary</p>
+                        <p className="mt-2 line-clamp-4">{stripHtml(description)}</p>
+                      </div>
+                    </>
                   ) : null}
                 </div>
               </div>
