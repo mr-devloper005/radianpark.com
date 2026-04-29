@@ -110,8 +110,8 @@ export function Navbar() {
       className="fixed bottom-0 left-0 top-0 z-[60] hidden w-[4.5rem] flex-col border-r border-[#e3e3e3] bg-white xl:flex"
     >
       <div className="flex flex-1 flex-col items-center gap-1 py-3">
-        <Link href="/" className="mb-2 flex h-12 w-12 items-center justify-center rounded-full bg-[#e60023] text-white shadow-sm">
-          <img src="/favicon.png?v=20260401" alt="" className="h-7 w-7 object-contain brightness-0 invert" />
+        <Link href="/" className="mb-2 flex h-12 w-12 items-center justify-center rounded-full bg-[#F9F6F1] shadow-sm ring-1 ring-[#A68955]/35">
+          <img src="/favicon.png?v=20260413" alt="" className="h-8 w-8 object-contain" />
           <span className="sr-only">{SITE_CONFIG.name} home</span>
         </Link>
         <NavIconButton href="/" label="Home" active={pathname === '/'}>
@@ -210,8 +210,8 @@ export function Navbar() {
           <SheetContent side="left" className="w-[280px] border-[#e3e3e3] bg-white p-0">
             <SheetHeader className="border-b border-[#e3e3e3] p-4 text-left">
               <SheetTitle className="flex items-center gap-2 text-lg">
-                <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#e60023]">
-                  <img src="/favicon.png?v=20260401" alt="" className="h-5 w-5 object-contain brightness-0 invert" />
+                <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#F9F6F1] ring-1 ring-[#A68955]/35">
+                  <img src="/favicon.png?v=20260413" alt="" className="h-6 w-6 object-contain" />
                 </span>
                 {SITE_CONFIG.name}
               </SheetTitle>
@@ -292,8 +292,8 @@ export function Navbar() {
             </nav>
           </SheetContent>
         </Sheet>
-        <Link href="/" className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#e60023] xl:hidden">
-          <img src="/favicon.png?v=20260401" alt="" className="h-5 w-5 object-contain brightness-0 invert" />
+        <Link href="/" className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#F9F6F1] ring-1 ring-[#A68955]/35 xl:hidden">
+          <img src="/favicon.png?v=20260413" alt="" className="h-6 w-6 object-contain" />
         </Link>
       </div>
 

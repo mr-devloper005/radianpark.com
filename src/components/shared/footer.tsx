@@ -8,7 +8,7 @@ export function Footer() {
   }
 
   const year = new Date().getFullYear()
-  const links = SITE_CONFIG.tasks.filter((t) => t.enabled)
+  const links = SITE_CONFIG.tasks.filter((t) => t.enabled && t.key !== "image" && t.key !== "profile")
 
   return (
     <footer className="border-t border-[#e3e3e3] bg-[#f1f1f1] text-[#111]">
