@@ -700,25 +700,11 @@ function VisualHome({ primaryTask, imagePosts, profilePosts, articlePosts }: { p
       accent: 'from-[#e60023]/15 to-transparent',
     },
     {
-      icon: User,
-      title: 'Creator profiles',
-      body: 'Showcase your identity, bio, and best work in a profile built for social reach.',
-      href: '/profile',
-      accent: 'from-[#111]/8 to-transparent',
-    },
-    {
       icon: Search,
       title: 'Smart search',
       body: 'Find ideas, people, and images quickly with search built across the platform.',
       href: '/search',
       accent: 'from-emerald-500/10 to-transparent',
-    },
-    {
-      icon: Users,
-      title: 'Community',
-      body: 'Follow voices you care about, join conversations, and grow alongside other creators.',
-      href: '/community',
-      accent: 'from-violet-500/10 to-transparent',
     },
   ]
 
@@ -739,7 +725,7 @@ function VisualHome({ primaryTask, imagePosts, profilePosts, articlePosts }: { p
             {SITE_CONFIG.name}
           </>
         }
-        title={<>Where images, ideas, and creators meet.</>}
+        title={<>Where inspiration and discovery live together.</>}
         description={SITE_CONFIG.description}
         primaryCta={{ href: primaryTask?.route || '/image-sharing', label: 'Start exploring' }}
         secondaryCta={{ href: '/register', label: 'Create free account' }}
