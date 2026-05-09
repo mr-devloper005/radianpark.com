@@ -48,6 +48,7 @@ export default async function SearchPage({
     const content = post.content && typeof post.content === "object" ? post.content : {};
     const typeText = compactText((content as any).type);
     if (typeText === "comment") return false;
+    if (getPostTaskKey(post) === "profile") return false;
     const description = compactText((content as any).description);
     const body = compactText((content as any).body);
     const excerpt = compactText((content as any).excerpt);
@@ -76,7 +77,7 @@ export default async function SearchPage({
       description={
         query
           ? `Results for "${query}"`
-          : "Find ideas, creators, and posts across image sharing and profiles."
+          : "Find ideas and posts across image sharing."
       }
       actions={
         <form
@@ -91,7 +92,7 @@ export default async function SearchPage({
             <Input
               name="q"
               defaultValue={query}
-              placeholder="Search ideas, creators, and images"
+              placeholder="Search ideas and images"
               className="h-full min-w-0 flex-1 border-0 bg-transparent pl-3 pr-2 text-sm text-[#111] placeholder:text-[#767676] shadow-none focus-visible:ring-0"
             />
           </div>
@@ -117,7 +118,7 @@ export default async function SearchPage({
           <div className="rounded-2xl border border-dashed border-[#e3e3e3] bg-[#fafafa] px-6 py-14 text-center">
             <p className="text-sm font-medium text-[#111]">No matching posts yet</p>
             <p className="mt-2 text-sm text-[#767676]">
-              Try different keywords or browse image sharing and profiles from the home page.
+              Try different keywords or browse image sharing from home page.
             </p>
           </div>
         )}

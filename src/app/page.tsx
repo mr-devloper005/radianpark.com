@@ -473,35 +473,6 @@ function DirectoryHome({ primaryTask, enabledTasks, listingPosts, classifiedPost
         </div>
       </section>
 
-      <section className="mx-auto max-w-[1600px] px-4 pb-16 sm:px-6 lg:px-10">
-        <div className="mb-8">
-          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-[#767676]">Also explore</p>
-          <h2 className="mt-2 text-2xl font-bold tracking-tight text-[#111] sm:text-3xl">Profiles &amp; related surfaces</h2>
-        </div>
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          {(profilePosts.length ? profilePosts : classifiedPosts).slice(0, 8).map((post) => {
-            const meta = getPostMeta(post)
-            const taskKey = resolveTaskKey(post.task, profilePosts.length ? 'profile' : 'classified')
-            return (
-              <Link
-                key={post.id}
-                href={getTaskHref(taskKey, post.slug)}
-                className="group overflow-hidden rounded-3xl border border-[#e3e3e3] bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-[0_12px_40px_rgba(0,0,0,0.08)]"
-              >
-                <div className="relative h-40 overflow-hidden bg-[#e9e9e9]">
-                  <ContentImage src={getPostImage(post)} alt={post.title} fill className="object-cover transition duration-300 group-hover:scale-[1.04]" />
-                </div>
-                <div className="p-4">
-                  <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#767676]">{meta.category || taskKey}</p>
-                  <h3 className="mt-1 line-clamp-2 font-semibold text-[#111]">{post.title}</h3>
-                  <p className="mt-2 line-clamp-2 text-sm text-[#767676]">{post.summary || 'Open for hours, contact, and more.'}</p>
-                </div>
-              </Link>
-            )
-          })}
-        </div>
-      </section>
-
       <PremiumBottomCtaBand
         title="Ready to get discovered locally?"
         description="Claim your listing, refresh your profile, and show up where people are already searching."
@@ -802,47 +773,6 @@ function VisualHome({ primaryTask, imagePosts, profilePosts, articlePosts }: { p
         </div>
       </section>
 
-      {/* Creators */}
-      {spotlightProfiles.length ? (
-        <section className="mx-auto max-w-[1920px] px-4 pb-16 sm:px-6 lg:px-10">
-          <div className="mb-8 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.25em] text-[#767676]">People to know</p>
-              <h2 className="mt-2 text-2xl font-bold tracking-tight text-[#111] sm:text-3xl">Creators on {SITE_CONFIG.name}</h2>
-            </div>
-            <Link href="/profile" className="text-sm font-semibold text-[#e60023] hover:underline">
-              Browse all profiles →
-            </Link>
-          </div>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {spotlightProfiles.map((post) => (
-              <Link
-                key={post.id}
-                href={`/profile/${post.slug}`}
-                className="group flex flex-col overflow-hidden rounded-3xl border border-[#e3e3e3] bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-[0_12px_40px_rgba(0,0,0,0.08)]"
-              >
-                <div className="relative aspect-[16/10] w-full overflow-hidden bg-[#e9e9e9]">
-                  <ContentImage src={getPostImage(post)} alt={post.title} fill className="object-cover transition duration-300 group-hover:scale-[1.04]" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-80" />
-                  <div className="absolute bottom-4 left-4 flex items-center gap-3">
-                    <div className="relative h-12 w-12 overflow-hidden rounded-full border-2 border-white shadow-md">
-                      <ContentImage src={getPostImage(post)} alt="" fill className="object-cover" />
-                    </div>
-                    <div className="min-w-0 text-white drop-shadow">
-                      <p className="truncate font-semibold">{post.title}</p>
-                      <p className="truncate text-xs text-white/85">View profile</p>
-                    </div>
-                  </div>
-                </div>
-                <div className="p-4">
-                  <p className="line-clamp-2 text-sm text-[#767676]">{post.summary || 'Creator on the platform—follow their public profile and latest posts.'}</p>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </section>
-      ) : null}
-
       <PremiumBottomCtaBand
         title="Ready to share your next visual story?"
         description="Join free, publish photos, and connect your profile with people who care about your work."
@@ -987,37 +917,6 @@ function CurationHome({
           ))}
         </div>
       </section>
-
-      {people.length ? (
-        <section className="mx-auto max-w-[1600px] px-4 pb-16 sm:px-6 lg:px-10">
-          <div className="mb-8 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.25em] text-[#767676]">People behind the pins</p>
-              <h2 className="mt-2 text-2xl font-bold text-[#111] sm:text-3xl">Curators &amp; profiles</h2>
-            </div>
-            <Link href="/profile" className="text-sm font-semibold text-[#e60023] hover:underline">
-              Meet everyone →
-            </Link>
-          </div>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {people.map((post) => (
-              <Link
-                key={post.id}
-                href={`/profile/${post.slug}`}
-                className="group overflow-hidden rounded-3xl border border-[#e3e3e3] bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
-              >
-                <div className="relative h-36 overflow-hidden bg-[#e9e9e9]">
-                  <ContentImage src={getPostImage(post)} alt={post.title} fill className="object-cover transition duration-300 group-hover:scale-[1.04]" />
-                </div>
-                <div className="p-4">
-                  <h3 className="font-bold text-[#111]">{post.title}</h3>
-                  <p className="mt-2 line-clamp-2 text-sm text-[#767676]">{post.summary || 'Curator profile, saved resources, and collection notes.'}</p>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </section>
-      ) : null}
 
       <PremiumBottomCtaBand
         title="Start your first collection"
