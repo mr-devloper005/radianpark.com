@@ -1,170 +1,56 @@
-import { Building2, FileText, Image as ImageIcon, Mail, MapPin, Phone, Sparkles, Bookmark } from 'lucide-react'
-import { LuxuryBrandShell } from '@/components/shared/luxury-brand-shell'
-import { SITE_CONFIG } from '@/lib/site-config'
-import { getFactoryState } from '@/design/factory/get-factory-state'
-import { getProductKind } from '@/design/factory/get-product-kind'
-import { CONTACT_PAGE_OVERRIDE_ENABLED, ContactPageOverride } from '@/overrides/contact-page'
+import { Mail, MessageSquareText, ShieldCheck } from 'lucide-react';
+
+import { ContactLeadForm } from '@/components/shared/contact-lead-form';
+import { Footer } from '@/components/shared/footer';
+import { NavbarShell } from '@/components/shared/navbar-shell';
+
+const siteName = process.env.NEXT_PUBLIC_SITE_NAME || 'Radian Park';
+
+const contactHighlights = [
+  { icon: Mail, title: 'Direct response', copy: 'Your message is saved securely and routed to the right team.' },
+  { icon: MessageSquareText, title: 'Clear details', copy: 'Share your requirement, question, or collaboration idea in one place.' },
+  { icon: ShieldCheck, title: 'Reliable follow-up', copy: 'We keep the request record so every conversation stays traceable.' },
+];
 
 export default function ContactPage() {
-  if (CONTACT_PAGE_OVERRIDE_ENABLED) {
-    return <ContactPageOverride />
-  }
-
-  const { recipe } = getFactoryState()
-  const productKind = getProductKind(recipe)
-  const lanes =
-    productKind === 'directory'
-      ? [
-          {
-            icon: Building2,
-            title: 'Buyer & seller advisory',
-            body: 'Private tours, pricing strategy, and negotiation support for residential and mixed-use assets.',
-          },
-          {
-            icon: Phone,
-            title: 'Institutional & developer desk',
-            body: 'Portfolio reviews, capital introductions, and launch planning for marquee developments.',
-          },
-          {
-            icon: MapPin,
-            title: 'New market coverage',
-            body: 'Request research packs or on-site diligence for geographies we are actively mapping.',
-          },
-        ]
-      : productKind === 'editorial'
-        ? [
-            {
-              icon: FileText,
-              title: 'Editorial submissions',
-              body: 'Pitch essays, columns, and long-form ideas that fit the publication.',
-            },
-            {
-              icon: Mail,
-              title: 'Newsletter partnerships',
-              body: 'Coordinate sponsorships, collaborations, and issue-level campaigns.',
-            },
-            {
-              icon: Sparkles,
-              title: 'Contributor support',
-              body: 'Get help with voice, formatting, and publication workflow questions.',
-            },
-          ]
-        : productKind === 'visual'
-          ? [
-              {
-                icon: ImageIcon,
-                title: 'Creator collaborations',
-                body: 'Discuss gallery launches, creator features, and visual campaigns.',
-              },
-              {
-                icon: Sparkles,
-                title: 'Licensing and use',
-                body: 'Reach out about usage rights, commercial requests, and visual partnerships.',
-              },
-              {
-                icon: Mail,
-                title: 'Media kits',
-                body: 'Request creator decks, editorial support, or visual feature placement.',
-              },
-            ]
-          : [
-              {
-                icon: Bookmark,
-                title: 'Collection submissions',
-                body: 'Suggest resources, boards, and links that deserve a place in the library.',
-              },
-              {
-                icon: Mail,
-                title: 'Resource partnerships',
-                body: 'Coordinate curation projects, reference pages, and link programs.',
-              },
-              {
-                icon: Sparkles,
-                title: 'Curator support',
-                body: 'Need help organizing shelves, collections, or profile-connected boards?',
-              },
-            ]
-
   return (
-    <LuxuryBrandShell
-      eyebrow="Contact"
-      title={`Speak with ${SITE_CONFIG.name}`}
-      description="Share a few details about your goals—acquisition, disposition, leasing, or research—and we will route your message to the right specialist."
-    >
-      <div className="grid gap-12 lg:grid-cols-[1fr_1.05fr] lg:items-start">
-        <div className="space-y-8">
-          <div>
-            <h2 className="font-display text-2xl font-semibold text-[#1D2B3A] sm:text-3xl">Ways we can help</h2>
-            <p className="mt-3 text-sm leading-7 text-[#1D2B3A]/70">
-              Every inquiry is reviewed by a human advisor. Expect a thoughtful first response—not an automated ticket
-              queue.
-            </p>
-          </div>
-          <ul className="space-y-4">
-            {lanes.map((lane) => (
-              <li
-                key={lane.title}
-                className="flex gap-4 rounded-3xl border border-[#A68955]/20 bg-white p-5 shadow-sm transition-shadow hover:shadow-md"
-              >
-                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-[#A68955]/30 bg-[#F9F6F1]">
-                  <lane.icon className="h-5 w-5 text-[#A68955]" aria-hidden />
-                </span>
-                <div>
-                  <h3 className="font-display text-lg font-semibold text-[#1D2B3A]">{lane.title}</h3>
-                  <p className="mt-1 text-sm leading-7 text-[#1D2B3A]/70">{lane.body}</p>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
+    <div className="min-h-screen bg-[#f7f1e8] text-stone-950">
+      <NavbarShell />
+      <main>
+        <section className="relative overflow-hidden px-6 py-20 md:px-10 lg:px-16">
+          <div className="absolute left-[-10%] top-10 h-72 w-72 rounded-full bg-amber-200/40 blur-3xl" />
+          <div className="absolute bottom-0 right-[-8%] h-80 w-80 rounded-full bg-stone-300/50 blur-3xl" />
 
-        <div className="rounded-3xl border border-[#A68955]/25 bg-white p-7 shadow-sm sm:p-9">
-          <h2 className="font-display text-2xl font-semibold text-[#1D2B3A]">Send a message</h2>
-          <p className="mt-2 text-sm text-[#1D2B3A]/65">
-            Fields below are for planning only; submitting does not create a client relationship until confirmed in
-            writing.
-          </p>
-          <form className="mt-8 grid gap-4">
-            <label className="grid gap-1.5 text-sm">
-              <span className="font-medium text-[#1D2B3A]">Full name</span>
-              <input
-                className="h-12 w-full rounded-xl border border-[#A68955]/25 bg-[#F9F6F1]/50 px-4 text-sm text-[#1D2B3A] placeholder:text-[#1D2B3A]/40 focus:border-[#A68955] focus:outline-none focus:ring-2 focus:ring-[#A68955]/25"
-                placeholder="Your name"
-                autoComplete="name"
-              />
-            </label>
-            <label className="grid gap-1.5 text-sm">
-              <span className="font-medium text-[#1D2B3A]">Email</span>
-              <input
-                type="email"
-                className="h-12 w-full rounded-xl border border-[#A68955]/25 bg-[#F9F6F1]/50 px-4 text-sm text-[#1D2B3A] placeholder:text-[#1D2B3A]/40 focus:border-[#A68955] focus:outline-none focus:ring-2 focus:ring-[#A68955]/25"
-                placeholder="you@example.com"
-                autoComplete="email"
-              />
-            </label>
-            <label className="grid gap-1.5 text-sm">
-              <span className="font-medium text-[#1D2B3A]">Topic</span>
-              <input
-                className="h-12 w-full rounded-xl border border-[#A68955]/25 bg-[#F9F6F1]/50 px-4 text-sm text-[#1D2B3A] placeholder:text-[#1D2B3A]/40 focus:border-[#A68955] focus:outline-none focus:ring-2 focus:ring-[#A68955]/25"
-                placeholder="e.g. Off-market acquisition in Mumbai"
-              />
-            </label>
-            <label className="grid gap-1.5 text-sm">
-              <span className="font-medium text-[#1D2B3A]">How can we help?</span>
-              <textarea
-                className="min-h-[168px] w-full rounded-2xl border border-[#A68955]/25 bg-[#F9F6F1]/50 px-4 py-3 text-sm text-[#1D2B3A] placeholder:text-[#1D2B3A]/40 focus:border-[#A68955] focus:outline-none focus:ring-2 focus:ring-[#A68955]/25"
-                placeholder="Share context: timeline, budget range, property type, and the outcome you are seeking."
-              />
-            </label>
-            <button
-              type="submit"
-              className="inline-flex h-12 w-full items-center justify-center rounded-full bg-[#A68955] px-6 text-sm font-semibold text-[#1D2B3A] transition-colors hover:bg-[#b89968]"
-            >
-              Submit inquiry
-            </button>
-          </form>
-        </div>
-      </div>
-    </LuxuryBrandShell>
-  )
+          <div className="relative mx-auto grid max-w-6xl gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+            <div>
+              <p className="text-sm font-black uppercase tracking-[0.35em] text-stone-500">Contact</p>
+              <h1 className="mt-5 max-w-3xl text-5xl font-black leading-[0.95] tracking-[-0.06em] text-stone-950 md:text-7xl">
+                Let&apos;s talk about your next move.
+              </h1>
+              <p className="mt-6 max-w-2xl text-lg leading-8 text-stone-700">
+                Use this form to reach {siteName}. Your request will be recorded and shared with the support team for follow-up.
+              </p>
+
+              <div className="mt-8 grid gap-4">
+                {contactHighlights.map((item) => (
+                  <div key={item.title} className="flex gap-4 rounded-3xl border border-stone-200 bg-white/60 p-5 shadow-sm">
+                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-stone-950 text-white">
+                      <item.icon className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <h2 className="text-base font-black text-stone-950">{item.title}</h2>
+                      <p className="mt-1 text-sm leading-6 text-stone-600">{item.copy}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <ContactLeadForm />
+          </div>
+        </section>
+      </main>
+      <Footer />
+    </div>
+  );
 }
