@@ -4,11 +4,10 @@ import { useState } from 'react'
 import { NavbarShell } from '@/components/shared/navbar-shell'
 import { Footer } from '@/components/shared/footer'
 import { SITE_CONFIG } from '@/lib/site-config'
-import { siteIdentity } from '@/config/site.identity'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
-import { Mail, MapPin, Phone, Clock, ArrowRight, CheckCircle2 } from 'lucide-react'
+import { ArrowRight, CheckCircle2 } from 'lucide-react'
 
 export const CONTACT_PAGE_OVERRIDE_ENABLED = true
 
@@ -25,37 +24,6 @@ export function ContactPageOverride() {
     e.preventDefault()
     setIsSubmitted(true)
   }
-
-  const contactMethods = [
-    {
-      icon: Mail,
-      label: 'Email us',
-      value: siteIdentity.contactEmail,
-      href: `mailto:${siteIdentity.contactEmail}`,
-      description: 'We reply within 24 hours',
-    },
-    {
-      icon: Phone,
-      label: 'Call us',
-      value: '+1 (555) 123-4567',
-      href: 'tel:+15551234567',
-      description: 'Mon-Fri from 9am to 6pm',
-    },
-    {
-      icon: MapPin,
-      label: 'Visit us',
-      value: '123 Innovation Drive',
-      href: '#',
-      description: 'San Francisco, CA 94102',
-    },
-    {
-      icon: Clock,
-      label: 'Working hours',
-      value: 'Mon - Fri',
-      href: '#',
-      description: '9:00 AM - 6:00 PM PST',
-    },
-  ]
 
   return (
     <div className="min-h-screen bg-[linear-gradient(180deg,#fdfdfd_0%,#f5f6f8_48%,#ffffff_100%)] text-zinc-950">
@@ -107,26 +75,6 @@ export function ContactPageOverride() {
               <p className="mt-3 text-zinc-600">
                 Choose the method that works best for you. Our team is ready to assist.
               </p>
-            </div>
-
-            {/* Contact Cards Grid */}
-            <div className="grid gap-4 sm:grid-cols-2">
-              {contactMethods.map((method) => (
-                <a
-                  key={method.label}
-                  href={method.href}
-                  className="group rounded-2xl border border-zinc-200 bg-white p-6 shadow-[0_4px_20px_rgba(0,0,0,0.03)] transition-all hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)] hover:-translate-y-1"
-                >
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-zinc-100 transition-colors group-hover:bg-zinc-900">
-                    <method.icon className="h-5 w-5 text-zinc-600 transition-colors group-hover:text-white" />
-                  </div>
-                  <p className="mt-4 text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">
-                    {method.label}
-                  </p>
-                  <p className="mt-2 text-lg font-semibold text-zinc-950">{method.value}</p>
-                  <p className="mt-1 text-sm text-zinc-500">{method.description}</p>
-                </a>
-              ))}
             </div>
 
             {/* Quick Actions */}
