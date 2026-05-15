@@ -16,7 +16,6 @@ export function Footer() {
         <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-[#767676]">
           <span className="font-semibold text-[#111]">{SITE_CONFIG.name}</span>
           <span aria-hidden>·</span>
-          <span>Image sharing &amp; social profiles</span>
         </div>
         <nav className="flex flex-wrap gap-4 text-sm font-semibold text-[#111]">
           {links.map((task) => (

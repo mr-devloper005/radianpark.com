@@ -171,15 +171,6 @@ export function Navbar() {
                 <span className="absolute right-0 top-0 h-2 w-2 rounded-full bg-[#e60023]" />
               </span>
             </NavIconButton>
-            {profileTask ? (
-              <NavIconButton
-                href={profileTask.route}
-                label="Profile"
-                active={pathname.startsWith(profileTask.route)}
-              >
-                <User className="h-7 w-7" strokeWidth={pathname.startsWith(profileTask.route) ? 2.5 : 2} />
-              </NavIconButton>
-            ) : null}
           </>
         ) : null}
       </div>
