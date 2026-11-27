@@ -347,13 +347,6 @@ export async function TaskDetailPage({ task, slug }: { task: TaskKey; slug: stri
   const articleSummary = post.summary || (typeof content.excerpt === "string" ? content.excerpt : "") || "";
   const articleAuthor =
     (typeof content.author === "string" && content.author.trim()) || post.authorName || "Editorial Team";
-  const articleDate = post.publishedAt
-    ? new Date(post.publishedAt).toLocaleDateString("en-IN", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      })
-    : "";
   const postTags = Array.isArray(post.tags) ? post.tags.filter((tag) => typeof tag === "string") : [];
   const location = content.address || content.location;
   const images = getImageUrls(post, content);
@@ -428,7 +421,6 @@ export async function TaskDetailPage({ task, slug }: { task: TaskKey; slug: stri
                   <div className="border-b border-zinc-100 bg-zinc-50/50 px-6 py-4 lg:px-10">
                     <div className="flex flex-wrap items-center gap-6 lg:gap-10">
                       {[
-                        { label: 'Published', value: articleDate || 'Recently' },
                         { label: 'Category', value: category },
                         { label: 'Views', value: '2.4K' },
                       ].map((stat, index) => (
